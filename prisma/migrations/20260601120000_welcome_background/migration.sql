@@ -1,0 +1,4 @@
+ALTER TYPE "HomeSectionType" ADD VALUE 'WELCOME_BLOCK';
+
+ALTER TABLE "HomeSection" ADD COLUMN IF NOT EXISTS "backgroundImageUrl" TEXT;
+ALTER TABLE "HomeSection" ADD COLUMN IF NOT EXISTS "backgroundStorageKey" TEXT;

@@ -1,0 +1,10 @@
+-- CreateEnum
+CREATE TYPE "Pc3dBuilderSlot" AS ENUM ('NONE', 'GABINETE', 'PROCESADOR', 'TARJETA_MADRE', 'RAM', 'TARJETA_GRAFICA', 'ALMACENAMIENTO', 'FUENTE_PODER', 'REFRIGERACION');
+
+-- CreateEnum
+CREATE TYPE "Pc3dCaseVariant" AS ENUM ('NONE', 'WHITE', 'BLACK');
+
+-- AlterTable
+ALTER TABLE "Product" ADD COLUMN "pc3dBuilderSlot" "Pc3dBuilderSlot" NOT NULL DEFAULT 'NONE';
+ALTER TABLE "Product" ADD COLUMN "pc3dCaseVariant" "Pc3dCaseVariant" NOT NULL DEFAULT 'NONE';
+ALTER TABLE "Product" ADD COLUMN "pc3dCaseSigla" TEXT;
