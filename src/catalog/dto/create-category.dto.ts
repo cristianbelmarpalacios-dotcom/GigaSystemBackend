@@ -14,4 +14,12 @@ export class CreateCategoryDto {
   @IsOptional()
   @IsString()
   parentId?: string;
+
+  @IsOptional()
+  @IsString()
+  navImageUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  navImageStorageKey?: string;
 }

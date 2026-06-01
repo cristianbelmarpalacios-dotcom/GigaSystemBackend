@@ -188,6 +188,9 @@ model Category {
   name        String
   slug        String            @unique
   description String?
+  /// Imagen de fondo del mega menú (solo categorías raíz del menú principal).
+  navImageUrl        String?
+  navImageStorageKey String?
   status      CategoryStatus    @default(ARCHIVED)
   parentId    String?
   parent      Category?         @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)

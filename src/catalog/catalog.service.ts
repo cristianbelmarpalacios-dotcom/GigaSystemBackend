@@ -96,6 +96,8 @@ export class CatalogService {
         slug: input.slug,
         description: input.description,
         parentId: input.parentId,
+        navImageUrl: input.navImageUrl,
+        navImageStorageKey: input.navImageStorageKey,
         status: CategoryStatus.ARCHIVED,
       },
       include: { parent: true, _count: { select: { products: true } } },
@@ -169,6 +171,12 @@ export class CatalogService {
           description: input.description,
           status: input.status,
           ...(input.parentId !== undefined ? { parentId: input.parentId } : {}),
+          ...(input.navImageUrl !== undefined
+            ? { navImageUrl: input.navImageUrl }
+            : {}),
+          ...(input.navImageStorageKey !== undefined
+            ? { navImageStorageKey: input.navImageStorageKey }
+            : {}),
         },
         include: { parent: true, _count: { select: { products: true } } },
       });
@@ -400,6 +408,7 @@ export class CatalogService {
       name: root.name,
       slug: root.slug,
       description: root.description,
+      navImageUrl: root.navImageUrl,
       productCount: root._count.products,
       children: root.children.map((child) => ({
         id: child.id,

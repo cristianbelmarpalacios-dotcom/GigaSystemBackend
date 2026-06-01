@@ -22,4 +22,14 @@ export class UpdateCategoryDto {
   @IsOptional()
   @IsEnum(CategoryStatus)
   status?: CategoryStatus;
+
+  @IsOptional()
+  @ValidateIf((_o, value) => value !== null)
+  @IsString()
+  navImageUrl?: string | null;
+
+  @IsOptional()
+  @ValidateIf((_o, value) => value !== null)
+  @IsString()
+  navImageStorageKey?: string | null;
 }
