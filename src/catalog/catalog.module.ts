@@ -7,17 +7,22 @@ import { CatalogAdminController } from './catalog.admin.controller';
 import { BrandsAdminController } from './brands.admin.controller';
 import { CategoriesAdminController } from './categories.admin.controller';
 import { CategoriesPublicController } from './categories.public.controller';
+import { NavFixedAdminController } from './nav-fixed.admin.controller';
+import { NavFixedPublicController } from './nav-fixed.public.controller';
+import { NavFixedService } from './nav-fixed.service';
 
 @Module({
   imports: [AuthModule, RbacModule],
-  providers: [CatalogService],
+  providers: [CatalogService, NavFixedService],
   controllers: [
     CatalogPublicController,
     CategoriesPublicController,
+    NavFixedPublicController,
     CatalogAdminController,
     BrandsAdminController,
     CategoriesAdminController,
+    NavFixedAdminController,
   ],
-  exports: [CatalogService],
+  exports: [CatalogService, NavFixedService],
 })
 export class CatalogModule {}

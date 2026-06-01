@@ -183,6 +183,19 @@ model Brand {
   updatedAt DateTime  @updatedAt
 }
 
+/// Entradas fijas del menú principal (ej. Armador de PC), no son categorías de catálogo.
+model NavFixedItem {
+  id                 String   @id @default(cuid())
+  slug               String   @unique
+  label              String
+  href               String
+  description        String?
+  navImageUrl        String?
+  navImageStorageKey String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
 model Category {
   id          String            @id @default(cuid())
   name        String
