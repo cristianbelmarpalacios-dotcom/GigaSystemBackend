@@ -11,6 +11,7 @@ import { PrismaModule } from './database/prisma.module';
 import { HealthModule } from './health/health.module';
 import { ImportJobsModule } from './import-jobs/import-jobs.module';
 import { HomepageModule } from './homepage/homepage.module';
+import { MarketingModule } from './marketing/marketing.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { MediaModule } from './media/media.module';
 import { OrdersModule } from './orders/orders.module';
@@ -48,6 +49,7 @@ function validate(config: Record<string, unknown>) {
     PaymentsModule,
     ImportJobsModule,
     HomepageModule,
+    MarketingModule,
   ],
 })
 export class AppModule {}

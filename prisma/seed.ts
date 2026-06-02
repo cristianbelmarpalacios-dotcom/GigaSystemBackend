@@ -55,6 +55,7 @@ async function main() {
           'ROLES',
           'HELP',
           'HOMEPAGE',
+          'MARKETING',
         ].map((module) => ({
           module: module as never,
           canView: true,

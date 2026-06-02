@@ -110,6 +110,22 @@ enum AdminModule {
   ROLES
   HELP
   HOMEPAGE
+  MARKETING
+}
+
+enum MarketingPlatform {
+  GOOGLE_ADS
+  META_ADS
+  GOOGLE_ANALYTICS
+  META_PIXEL
+  TIKTOK_ADS
+}
+
+enum MarketingConnectionStatus {
+  DISCONNECTED
+  PENDING
+  CONNECTED
+  ERROR
 }
 
 model AdminRole {
@@ -607,4 +623,35 @@ model HomeTile {
   priceLabel String?
   sortOrder  Int            @default(0)
   createdAt  DateTime       @default(now())
+}
+
+/// Configuración global de marketing (singleton id = default).
+model MarketingSettings {
+  id                       String   @id @default("default")
+  trackingEnabled          Boolean  @default(false)
+  currency                 String   @default("CLP")
+  gtmContainerId           String?
+  ga4MeasurementId         String?
+  metaPixelId              String?
+  googleAdsConversionId    String?
+  googleAdsConversionLabel String?
+  tiktokPixelId            String?
+  notes                    String?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+}
+
+/// Estado de conexión con cada plataforma de ads / analítica.
+model MarketingPlatformConnection {
+  id                String                    @id @default(cuid())
+  platform          MarketingPlatform         @unique
+  status            MarketingConnectionStatus @default(DISCONNECTED)
+  accountName       String?
+  accountExternalId String?
+  lastSyncAt        DateTime?
+  lastError         String?
+  config            Json?
+  connectedAt       DateTime?
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
 }
