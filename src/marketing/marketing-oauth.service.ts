@@ -88,11 +88,8 @@ export class MarketingOAuthService {
           'Configura META_APP_ID y META_APP_SECRET en el backend',
         );
       }
-      const scope = [
-        'ads_read',
-        'read_insights',
-        'business_management',
-      ].join(',');
+      // ads_read incluye métricas de campañas; read_insights es de Pages y rompe el login
+      const scope = ['ads_read', 'business_management'].join(',');
       const params = new URLSearchParams({
         client_id: env.meta.appId,
         redirect_uri: env.oauthCallbackUrl,
