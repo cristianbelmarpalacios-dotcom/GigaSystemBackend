@@ -8,6 +8,8 @@ import { CreateHomeSlideDto } from './dto/create-home-slide.dto';
 import { UpsertHomePromoDto } from './dto/upsert-home-promo.dto';
 import { UpsertHomeTileDto } from './dto/upsert-home-tile.dto';
 
+const WELCOME_SLIDE_MAX = 3;
+
 const sectionInclude = {
   slides: { orderBy: { sortOrder: 'asc' as const } },
   promo: true,
@@ -56,6 +58,7 @@ export class HomepageService {
 
   async getPublicHomepage() {
     await this.ensureSections();
+    await this.migrateWelcomeLegacyBackground();
     const sections = await this.prisma.homeSection.findMany({
       where: { isActive: true },
       include: {
@@ -91,6 +94,7 @@ export class HomepageService {
 
   async listAdmin() {
     await this.ensureSections();
+    await this.migrateWelcomeLegacyBackground();
     return this.prisma.homeSection.findMany({
       include: sectionInclude,
       orderBy: { sortOrder: 'asc' },
@@ -118,6 +122,9 @@ export class HomepageService {
         ...(dto.backgroundBlurPx !== undefined && {
           backgroundBlurPx: dto.backgroundBlurPx,
         }),
+        ...(dto.showWelcomeText !== undefined && {
+          showWelcomeText: dto.showWelcomeText,
+        }),
       },
       include: sectionInclude,
     });
@@ -128,6 +135,11 @@ export class HomepageService {
     const count = await this.prisma.homeSlide.count({
       where: { sectionId: section.id },
     });
+    if (type === 'WELCOME_BLOCK' && count >= WELCOME_SLIDE_MAX) {
+      throw new BadRequestException(
+        `Máximo ${WELCOME_SLIDE_MAX} imágenes en la portada`,
+      );
+    }
     return this.prisma.homeSlide.create({
       data: {
         sectionId: section.id,
@@ -189,6 +201,33 @@ export class HomepageService {
 
   uploadImage(file: Express.Multer.File) {
     return this.media.uploadHomepageAsset(file);
+  }
+
+  /** Convierte el fondo único antiguo en el primer slide del carrusel. */
+  private async migrateWelcomeLegacyBackground() {
+    const welcome = await this.prisma.homeSection.findUnique({
+      where: { type: 'WELCOME_BLOCK' },
+      include: { slides: true },
+    });
+    if (!welcome?.backgroundImageUrl || welcome.slides.length > 0) {
+      return;
+    }
+    await this.prisma.homeSlide.create({
+      data: {
+        sectionId: welcome.id,
+        imageUrl: welcome.backgroundImageUrl,
+        storageKey: welcome.backgroundStorageKey ?? '',
+        linkUrl: '/',
+        sortOrder: 0,
+      },
+    });
+    await this.prisma.homeSection.update({
+      where: { id: welcome.id },
+      data: {
+        backgroundImageUrl: null,
+        backgroundStorageKey: null,
+      },
+    });
   }
 
   private async getSectionByType(type: HomeSectionType) {

@@ -36,4 +36,8 @@ export class UpsertHomeSectionDto {
   @Min(0)
   @Max(24)
   backgroundBlurPx?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  showWelcomeText?: boolean;
 }

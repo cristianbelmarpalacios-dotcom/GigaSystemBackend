@@ -576,6 +576,8 @@ model HomeSection {
   backgroundOverlayOpacity Int @default(50)
   /** Difuminado del fondo en píxeles (0 = nítida, 24 = muy borrosa) */
   backgroundBlurPx       Int @default(6)
+  /** Mostrar logo, títulos y botones sobre el carrusel de portada */
+  showWelcomeText        Boolean @default(true)
   slides               HomeSlide[]
   promo     HomePromo?
   tiles     HomeTile[]
